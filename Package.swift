@@ -29,10 +29,10 @@ let package = Package(
         .library(name: .domain, targets: [.domain])
     ],
     dependencies: [
-        .package(url: "https://github.com/swift-standards/swift-rfc-1035", from: "0.4.2"),
-        .package(url: "https://github.com/swift-standards/swift-rfc-1123", from: "0.5.1"),
-        .package(url: "https://github.com/swift-standards/swift-rfc-5321", from: "0.3.2"),
-        .package(url: "https://github.com/swift-standards/swift-rfc-5890", from: "0.1.1")
+        .package(url: "https://github.com/swift-standards/swift-rfc-1035", from: "0.4.3"),
+        .package(url: "https://github.com/swift-standards/swift-rfc-1123", from: "0.5.2"),
+        .package(url: "https://github.com/swift-standards/swift-rfc-5321", from: "0.3.3"),
+        .package(url: "https://github.com/swift-standards/swift-rfc-5890", from: "0.1.2")
     ],
     targets: [
         .target(
