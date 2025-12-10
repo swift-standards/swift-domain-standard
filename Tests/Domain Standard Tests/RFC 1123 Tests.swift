@@ -60,7 +60,7 @@ struct `RFC 1123 Host Tests` {
                 .invalidCharacters(
                     "host@name",
                     byte: 0x40,
-                    reason: "Only letters, digits and hyphens are allowed"
+                    reason: "Only letters, digits, and hyphens allowed"
                 )
             )
         ) {
