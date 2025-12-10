@@ -163,12 +163,8 @@ extension Domain {
             }
         }
         // Fall back to RFC 1123
-        do {
-            guard let parent = try rfc1123.parent() else { return nil }
-            return Domain(rfc1123: parent)
-        } catch {
-            throw Error.conversionFailure("RFC 1123", to: "parent domain")
-        }
+        guard let parent = rfc1123.parent() else { return nil }
+        return Domain(rfc1123: parent)
     }
 
     /// Returns the root domain (tld + sld)
@@ -182,12 +178,8 @@ extension Domain {
             }
         }
         // Fall back to RFC 1123
-        do {
-            guard let root = try rfc1123.root() else { return nil }
-            return Domain(rfc1123: root)
-        } catch {
-            throw Error.conversionFailure("RFC 1123", to: "root domain")
-        }
+        guard let root = rfc1123.root() else { return nil }
+        return Domain(rfc1123: root)
     }
 }
 
