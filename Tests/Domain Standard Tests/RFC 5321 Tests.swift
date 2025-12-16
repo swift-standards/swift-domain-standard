@@ -70,14 +70,14 @@ struct `RFC 5321 Domain Tests` {
     @Test
     func `Successfully gets parent domain`() throws {
         let domain = try RFC_1123.Domain("mail.example.com")
-        let parent = try domain.parent()
+        let parent = domain.parent()
         #expect(parent?.name == "example.com")
     }
 
     @Test
     func `Successfully gets root domain`() throws {
         let domain = try RFC_1123.Domain("mail.example.com")
-        let root = try domain.root()
+        let root = domain.root()
         #expect(root?.name == "example.com")
     }
 
