@@ -97,14 +97,14 @@ struct `RFC 1123 Host Tests` {
     @Test
     func `Successfully gets parent domain`() throws {
         let host = try RFC_1123.Domain("host.example.com")
-        let parent = try host.parent()
+        let parent = host.parent()
         #expect(parent?.name == "example.com")
     }
 
     @Test
     func `Successfully gets root domain`() throws {
         let host = try RFC_1123.Domain("host.example.com")
-        let root = try host.root()
+        let root = host.root()
         #expect(root?.name == "example.com")
     }
 
