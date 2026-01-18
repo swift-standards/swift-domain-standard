@@ -26,7 +26,7 @@ let package = Package(
         .watchOS(.v26)
     ],
     products: [
-        .library(name: .domain, targets: [.domain])
+        .library(name: "Domain Standard", targets: ["Domain Standard"])
     ],
     dependencies: [
         .package(path: "../swift-rfc-1035"),
@@ -36,21 +36,12 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: .domain,
+            name: "Domain Standard",
             dependencies: [
                 .rfc1035,
                 .rfc1123,
                 .rfc5321,
                 .rfc5890
-            ]
-        ),
-        .testTarget(
-            name: .domain.tests,
-            dependencies: [
-                .domain,
-                .rfc1035,
-                .rfc1123,
-                .rfc5321
             ]
         )
     ],
