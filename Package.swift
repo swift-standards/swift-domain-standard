@@ -45,7 +45,13 @@ let package = Package(
                 .rfc5321,
                 .rfc5890
             ]
-        )
+        ),
+        .testTarget(
+            name: "Domain Standard Tests",
+            dependencies: [
+                "Domain Standard",
+            ]
+        ),
     ],
     swiftLanguageModes: [.v6]
 )
@@ -58,6 +64,7 @@ for target in package.targets where ![.system, .binary, .plugin, .macro].contain
         .enableUpcomingFeature("ExistentialAny"),
         .enableUpcomingFeature("InternalImportsByDefault"),
         .enableUpcomingFeature("MemberImportVisibility"),
+        .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
         .enableExperimentalFeature("Lifetimes"),
         .enableExperimentalFeature("SuppressedAssociatedTypes"),
         .enableExperimentalFeature("SuppressedAssociatedTypesWithDefaults"),
