@@ -5,7 +5,7 @@
 //  IDNA2008 (Internationalized Domain Names) support
 //
 
-import RFC_5890
+public import RFC_5890
 
 /// IDNA2008 (Internationalized Domain Names) support for Domain
 ///
@@ -163,7 +163,7 @@ extension Domain {
     /// - Returns: ASCII-compatible domain string
     /// - Throws: `Domain.Error.idnaConversionFailure` if conversion fails
     @available(*, deprecated, renamed: "init(ascii:)", message: "Use Domain(ascii:) instead")
-    public func toASCII() throws -> String {
+    public func toASCII() throws(IDNA.Error) -> String {
         try IDNA.toASCII(name)
     }
 
@@ -175,7 +175,7 @@ extension Domain {
     /// - Returns: Unicode domain string
     /// - Throws: `Domain.Error.idnaConversionFailure` if conversion fails
     @available(*, deprecated, renamed: "init(unicode:)", message: "Use Domain(unicode:) instead")
-    public func toUnicode() throws -> String {
+    public func toUnicode() throws(IDNA.Error) -> String {
         try IDNA.toUnicode(name)
     }
 }
