@@ -5,8 +5,8 @@
 //  RFC standard interoperability extensions
 //
 
-import RFC_1035
-import RFC_1123
+public import RFC_1035
+public import RFC_1123
 
 // MARK: - RFC_1035.Domain Extensions
 

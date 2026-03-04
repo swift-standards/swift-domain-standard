@@ -5,8 +5,8 @@
 //  Universal domain type supporting multiple RFC standards
 //
 
-import RFC_1035
-import RFC_1123
+public import RFC_1035
+public import RFC_1123
 
 /// A universal domain name that tracks conformance to multiple RFC standards
 ///
