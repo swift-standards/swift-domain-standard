@@ -31,10 +31,10 @@ let package = Package(
         .library(name: "Domain Standard", targets: ["Domain Standard"])
     ],
     dependencies: [
-        .package(path: "../swift-rfc-1035"),
-        .package(path: "../swift-rfc-1123"),
-        .package(path: "../swift-rfc-5321"),
-        .package(path: "../swift-rfc-5890")
+        .package(path: "../../swift-ietf/swift-rfc-1035"),
+        .package(path: "../../swift-ietf/swift-rfc-1123"),
+        .package(path: "../../swift-ietf/swift-rfc-5321"),
+        .package(path: "../../swift-ietf/swift-rfc-5890")
     ],
     targets: [
         .target(
