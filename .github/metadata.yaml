@@ -1,0 +1,9 @@
+# .github/metadata.yaml
+# Triaged by AI-assisted bulk pass (2026-04-29).
+description: "Swift standard Domain type for DNS domain names."
+topics:
+  - standards
+  - domain
+  - dns
+  - type-safety
+homepage: "https://swift-institute.org"
