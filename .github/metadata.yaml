@@ -1,6 +1,6 @@
 # .github/metadata.yaml
 # Triaged by AI-assisted bulk pass (2026-04-29).
-description: "Swift standard Domain type for DNS domain names."
+description: "RFC 1035, 1123, and 5321 domain name validation for Swift."
 topics:
   - standards
   - domain
