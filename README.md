@@ -1,6 +1,6 @@
 # swift-domain-standard
 
-[![CI](https://github.com/coenttb/swift-domain-standard/workflows/CI/badge.svg)](https://github.com/coenttb/swift-domain-standard/actions/workflows/ci.yml)
+[![CI](https://github.com/swift-standards/swift-domain-standard/workflows/CI/badge.svg)](https://github.com/swift-standards/swift-domain-standard/actions/workflows/ci.yml)
 ![Development Status](https://img.shields.io/badge/status-active--development-blue.svg)
 
 Type-safe domain name handling for Swift with multi-RFC standard support.
@@ -44,7 +44,7 @@ Add to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/coenttb/swift-domain-standard", from: "0.1.0")
+    .package(url: "https://github.com/swift-standards/swift-domain-standard", from: "0.4.4")
 ]
 ```
 
@@ -235,7 +235,7 @@ do {
 
 ### Used By
 
-- [swift-emailaddress-standard](https://github.com/coenttb/swift-emailaddress-standard): A Swift package with a type-safe EmailAddress model.
+- [swift-emailaddress-standard](https://github.com/swift-standards/swift-emailaddress-standard): A Swift package with a type-safe EmailAddress model.
 - [swift-types-foundation](https://github.com/coenttb/swift-types-foundation): A Swift package bundling essential type-safe packages for domain modeling.
 - [swift-web-foundation](https://github.com/coenttb/swift-web-foundation): A Swift package with tools to simplify web development.
 
