@@ -50,7 +50,7 @@ public struct Domain: Hashable, Sendable {
         self.rfc1035 = rfc1035
 
         // RFC 1035 domains are valid RFC 1123 domains
-        do {
+        do throws(RFC_1123.Domain.Error) {
             self.rfc1123 = try RFC_1123.Domain(rfc1035.name)
         } catch {
             throw Error.conversionFailure("RFC 1035", to: "RFC 1123")
@@ -143,7 +143,7 @@ extension Domain {
             }
         }
         // Fall back to RFC 1123
-        do {
+        do throws(RFC_1123.Domain.Error) {
             let subdomain = try rfc1123.addingSubdomain(stringComponents)
             return Domain(rfc1123: subdomain)
         } catch {
