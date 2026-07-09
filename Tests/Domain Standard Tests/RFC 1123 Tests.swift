@@ -71,13 +71,13 @@ struct `RFC 1123 Host Tests` {
     @Test
     func `Successfully gets TLD`() throws {
         let host = try RFC_1123.Domain("example.com")
-        #expect(host.tld.map(String.init) == "com")
+        #expect(host.tld.map(\.rawValue) == "com")
     }
 
     @Test
     func `Successfully gets SLD`() throws {
         let host = try RFC_1123.Domain("example.com")
-        #expect(host.sld.map(String.init) == "example")
+        #expect(host.sld.map(\.rawValue) == "example")
     }
 
     @Test

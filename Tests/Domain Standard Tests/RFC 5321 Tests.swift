@@ -30,13 +30,13 @@ struct `RFC 5321 Domain Tests` {
     @Test
     func `Successfully gets TLD`() throws {
         let domain = try RFC_1123.Domain("example.com")
-        #expect(domain.tld.map(String.init) == "com")
+        #expect(domain.tld.map(\.rawValue) == "com")
     }
 
     @Test
     func `Successfully gets SLD`() throws {
         let domain = try RFC_1123.Domain("example.com")
-        #expect(domain.sld.map(String.init) == "example")
+        #expect(domain.sld.map(\.rawValue) == "example")
     }
 
     @Test
