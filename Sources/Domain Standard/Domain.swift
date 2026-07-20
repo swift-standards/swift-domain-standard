@@ -45,11 +45,18 @@ public struct Domain: Hashable, Sendable {
 
     /// Initialize with an RFC 1035 domain (strictest)
     ///
-    /// Automatically populates rfc1123 since RFC 1035 ⊂ RFC 1123.
+    /// Populates rfc1123 for presentation-validated RFC 1035 domains, whose
+    /// preferred syntax (RFC 1035 Section 2.3.1) is a subset of RFC 1123.
+    ///
+    /// Throws for wire-decoded RFC 1035 domains: labels on the DNS wire may
+    /// contain arbitrary octets, stored in Section 5.1 escaped presentation
+    /// form (e.g. `_dmarc`, `\068`, `\.`), which fall outside the RFC 1123
+    /// alphabet and are rejected by RFC 1123's strict validation.
     public init(rfc1035: RFC_1035.Domain) throws(Error) {
         self.rfc1035 = rfc1035
 
-        // RFC 1035 domains are valid RFC 1123 domains
+        // Presentation-validated RFC 1035 domains are valid RFC 1123 domains;
+        // wire-decoded names with escaped octets are not.
         do throws(RFC_1123.Domain.Error) {
             self.rfc1123 = try RFC_1123.Domain(rfc1035.name)
         } catch {
