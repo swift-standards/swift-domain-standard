@@ -48,6 +48,17 @@ dependencies: [
 ]
 ```
 
+Add the product to your target:
+
+```swift
+.target(
+    name: "App",
+    dependencies: [
+        .product(name: "Domain Standard", package: "swift-domain-standard")
+    ]
+)
+```
+
 ## Quick Start
 
 ### Basic Domain Creation
