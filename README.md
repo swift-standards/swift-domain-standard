@@ -1,7 +1,7 @@
 # swift-domain-standard
 
-[![CI](https://github.com/swift-standards/swift-domain-standard/workflows/CI/badge.svg)](https://github.com/swift-standards/swift-domain-standard/actions/workflows/ci.yml)
 ![Development Status](https://img.shields.io/badge/status-active--development-blue.svg)
+[![CI](https://github.com/swift-standards/swift-domain-standard/workflows/CI/badge.svg)](https://github.com/swift-standards/swift-domain-standard/actions/workflows/ci.yml)
 
 Type-safe domain name handling for Swift with multi-RFC standard support.
 
