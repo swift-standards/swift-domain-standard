@@ -69,7 +69,11 @@ public struct Domain: Hashable, Sendable {
     /// Attempts to upgrade to RFC 1035 if possible.
     public init(rfc1123: RFC_1123.Domain) {
         // Try to upgrade to RFC 1035 if possible
-        self.rfc1035 = try? RFC_1035.Domain(rfc1123.name)
+        do throws(RFC_1035.Domain.Error) {
+            self.rfc1035 = try RFC_1035.Domain(rfc1123.name)
+        } catch {
+            self.rfc1035 = nil
+        }
         self.rfc1123 = rfc1123
     }
 }
@@ -82,7 +86,10 @@ extension Domain {
     /// Parses and validates the domain, storing it with all applicable RFC variants.
     public init<S: StringProtocol>(_ string: S) throws(Error) {
         // Always try RFC 1123 (required for rfc5321)
-        guard let rfc1123 = try? RFC_1123.Domain(String(string)) else {
+        let rfc1123: RFC_1123.Domain
+        do throws(RFC_1123.Domain.Error) {
+            rfc1123 = try RFC_1123.Domain(String(string))
+        } catch {
             throw Error.invalidFormat(String(string))
         }
 
@@ -250,5 +257,11 @@ extension Domain: Codable {
 
 extension Domain: RawRepresentable {
     public var rawValue: String { name }
-    public init?(rawValue: String) { try? self.init(rawValue) }
+    public init?(rawValue: String) {
+        do throws(Error) {
+            try self.init(rawValue)
+        } catch {
+            return nil
+        }
+    }
 }
