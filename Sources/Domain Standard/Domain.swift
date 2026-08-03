@@ -216,10 +216,13 @@ extension Domain.Error: CustomStringConvertible {
         switch self {
         case .invalidFormat(let desc):
             return "Invalid domain format: \(desc)"
+
         case .cannotCreateSubdomain:
             return "Cannot create subdomain for this domain type"
+
         case .conversionFailure(let from, let to):
             return "Failed to convert from \(from) to \(to)"
+
         case .idnaConversionFailure(let reason):
             return "IDNA conversion failed: \(reason)"
         }
