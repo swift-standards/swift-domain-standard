@@ -2,8 +2,6 @@
 
 import PackageDescription
 
-
-
 extension String {
     static let domain: Self = "Domain Standard"
 }
@@ -25,7 +23,7 @@ let package = Package(
         .macOS(.v26),
         .iOS(.v26),
         .tvOS(.v26),
-        .watchOS(.v26)
+        .watchOS(.v26),
     ],
     products: [
         .library(name: "Domain Standard", targets: ["Domain Standard"])
@@ -34,7 +32,7 @@ let package = Package(
         .package(url: "https://github.com/swift-ietf/swift-rfc-1035.git", branch: "main"),
         .package(url: "https://github.com/swift-ietf/swift-rfc-1123.git", branch: "main"),
         .package(url: "https://github.com/swift-ietf/swift-rfc-5321.git", branch: "main"),
-        .package(url: "https://github.com/swift-ietf/swift-rfc-5890.git", branch: "main")
+        .package(url: "https://github.com/swift-ietf/swift-rfc-5890.git", branch: "main"),
     ],
     targets: [
         .target(
@@ -43,13 +41,13 @@ let package = Package(
                 .rfc1035,
                 .rfc1123,
                 .rfc5321,
-                .rfc5890
+                .rfc5890,
             ]
         ),
         .testTarget(
             name: "Domain Standard Tests",
             dependencies: [
-                "Domain Standard",
+                "Domain Standard"
             ]
         ),
     ],
