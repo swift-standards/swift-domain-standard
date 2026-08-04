@@ -258,7 +258,7 @@ extension Domain: Codable {
 extension Domain: RawRepresentable {
     public var rawValue: String { name }
     public init?(rawValue: String) {
-        do throws(Domain.Error) {
+        do throws(Error) {
             try self.init(rawValue)
         } catch {
             return nil
