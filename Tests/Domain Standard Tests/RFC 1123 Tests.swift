@@ -1,10 +1,3 @@
-//
-//  File.swift
-//  swift-web
-//
-//  Created by Coen ten Thije Boonkkamp on 28/12/2024.
-//
-
 import Foundation
 import RFC_1123
 import Testing
@@ -47,17 +40,14 @@ struct `RFC 1123 Host Tests` {
 
     @Test
     func `Successfully creates host with TLD ending in a number`() throws {
-        // RFC 1123 §2.1 only requires the TLD to be alphabetic in its FIRST
-        // character ("at least the highest-level component label will be
-        // alphabetic"); a trailing digit is not prohibited, matching the
-        // upstream swift-rfc-1123 implementation.
+
         let host = try RFC_1123.Domain("example.com123")
         #expect(host.name == "example.com123")
     }
 
     @Test
     func `Fails with invalid label containing special characters`() throws {
-        // @ is ASCII 0x40
+
         #expect(
             throws: RFC_1123.Domain.Error.invalidLabel(
                 .invalidCharacters(

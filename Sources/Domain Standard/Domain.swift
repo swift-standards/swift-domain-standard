@@ -1,62 +1,15 @@
-//
-//  Domain.swift
-//  swift-domain-standard
-//
-//  Universal domain type supporting multiple RFC standards
-//
-
 public import RFC_1035
 public import RFC_1123
 
-/// A universal domain name that tracks conformance to multiple RFC standards
-///
-/// ## Category Theory
-///
-/// Domain is a **product type** that stores the most permissive representation
-/// along with optional stricter variants:
-///
-/// ```
-/// Domain = RFC_1123.Domain × Optional<RFC_1035.Domain>
-/// ```
-///
-/// ## RFC Hierarchy
-///
-/// ```
-/// RFC 1035 ⊂ RFC 1123
-/// ```
-///
-/// - **RFC 1035**: Strictest (labels must start with letter)
-/// - **RFC 1123**: Allows labels starting with digits (used by RFC 5321/SMTP)
-///
-/// ## Canonical Storage
-///
-/// - **Required**: `rfc1123` (always present, most permissive stored)
-/// - **Optional**: `rfc1035` (if domain conforms to strictest rules)
-///
-/// Note: RFC 5321 (SMTP) uses RFC 1123 domain syntax, so `rfc1123` serves both purposes.
 public struct Domain: Hashable, Sendable {
-    /// RFC 1035 domain if this domain conforms to the strictest standard
+
     public let rfc1035: RFC_1035.Domain?
 
-    /// RFC 1123 domain (always present)
-    ///
-    /// Also serves as RFC 5321 domain since RFC 5321 uses RFC 1123 syntax.
     public let rfc1123: RFC_1123.Domain
 
-    /// Initialize with an RFC 1035 domain (strictest)
-    ///
-    /// Populates rfc1123 for presentation-validated RFC 1035 domains, whose
-    /// preferred syntax (RFC 1035 Section 2.3.1) is a subset of RFC 1123.
-    ///
-    /// Throws for wire-decoded RFC 1035 domains: labels on the DNS wire may
-    /// contain arbitrary octets, stored in Section 5.1 escaped presentation
-    /// form (e.g. `_dmarc`, `\068`, `\.`), which fall outside the RFC 1123
-    /// alphabet and are rejected by RFC 1123's strict validation.
     public init(rfc1035: RFC_1035.Domain) throws(Error) {
         self.rfc1035 = rfc1035
 
-        // Presentation-validated RFC 1035 domains are valid RFC 1123 domains;
-        // wire-decoded names with escaped octets are not.
         do throws(RFC_1123.Domain.Error) {
             self.rfc1123 = try RFC_1123.Domain(rfc1035.name)
         } catch {
@@ -64,11 +17,8 @@ public struct Domain: Hashable, Sendable {
         }
     }
 
-    /// Initialize with an RFC 1123 domain (canonical init)
-    ///
-    /// Attempts to upgrade to RFC 1035 if possible.
     public init(rfc1123: RFC_1123.Domain) {
-        // Try to upgrade to RFC 1035 if possible
+
         do throws(RFC_1035.Domain.Error) {
             self.rfc1035 = try RFC_1035.Domain(rfc1123.name)
         } catch {
@@ -78,14 +28,10 @@ public struct Domain: Hashable, Sendable {
     }
 }
 
-// MARK: - Convenience Initializers
-
 extension Domain {
-    /// Initialize from a string representation
-    ///
-    /// Parses and validates the domain, storing it with all applicable RFC variants.
+
     public init<S: StringProtocol>(_ string: S) throws(Error) {
-        // Always try RFC 1123 (required for rfc5321)
+
         let rfc1123: RFC_1123.Domain
         do throws(RFC_1123.Domain.Error) {
             rfc1123 = try RFC_1123.Domain(String(string))
@@ -96,59 +42,47 @@ extension Domain {
         self.init(rfc1123: rfc1123)
     }
 
-    /// Initialize from an array of labels
     public init<S: StringProtocol>(labels: [S]) throws(Error) {
         try self.init(labels.map { String($0) }.joined(separator: "."))
     }
 }
 
-// MARK: - Properties
-
 extension Domain {
-    /// The domain string, using the most specific format available
+
     public var name: String {
         rfc1035?.name ?? rfc1123.name
     }
 
-    /// The top-level domain (rightmost label)
     public var tld: String? {
         rfc1035?.tld?.rawValue ?? rfc1123.tld?.rawValue
     }
 
-    /// The second-level domain (second from right)
     public var sld: String? {
         rfc1035?.sld?.rawValue ?? rfc1123.sld?.rawValue
     }
 
-    /// Returns true if this domain conforms to RFC 1035 (strictest)
     public var isRFC1035Compliant: Bool {
         rfc1035 != nil
     }
 
-    /// Returns true if this is a standard domain (has labels, not an IP address)
-    ///
-    /// Always true for Domain since we only store valid RFC 1123 domains.
     public var isStandardDomain: Bool {
         true
     }
 }
 
-// MARK: - Domain Operations
-
 extension Domain {
-    /// Returns true if this is a subdomain of the given domain
+
     public func isSubdomain(of parent: Domain) -> Bool {
-        // Use the most specific format available for both domains
+
         if let myRFC1035 = rfc1035, let parentRFC1035 = parent.rfc1035 {
             return myRFC1035.isSubdomain(of: parentRFC1035)
         }
         return rfc1123.isSubdomain(of: parent.rfc1123)
     }
 
-    /// Creates a subdomain by prepending new labels
     public func addingSubdomain<S: StringProtocol>(_ components: S...) throws(Error) -> Domain {
         let stringComponents = components.map { String($0) }
-        // Use the most specific format available
+
         if let domain = rfc1035 {
             do {
                 return try Domain(rfc1035: domain.addingSubdomain(stringComponents))
@@ -156,7 +90,7 @@ extension Domain {
                 throw Error.cannotCreateSubdomain
             }
         }
-        // Fall back to RFC 1123
+
         do throws(RFC_1123.Domain.Error) {
             let subdomain = try rfc1123.addingSubdomain(stringComponents)
             return Domain(rfc1123: subdomain)
@@ -165,9 +99,8 @@ extension Domain {
         }
     }
 
-    /// Returns the parent domain by removing the leftmost label
     public func parent() throws(Error) -> Domain? {
-        // Use the most specific format available
+
         if let domain = rfc1035 {
             do {
                 guard let parent = try domain.parent() else { return nil }
@@ -176,12 +109,11 @@ extension Domain {
                 throw Error.conversionFailure("RFC 1035", to: "parent domain")
             }
         }
-        // Fall back to RFC 1123
+
         guard let parent = rfc1123.parent() else { return nil }
         return Domain(rfc1123: parent)
     }
 
-    /// Returns the root domain (tld + sld)
     public func root() throws(Error) -> Domain? {
         if let domain = rfc1035 {
             do {
@@ -191,32 +123,25 @@ extension Domain {
                 throw Error.conversionFailure("RFC 1035", to: "root domain")
             }
         }
-        // Fall back to RFC 1123
+
         guard let root = rfc1123.root() else { return nil }
         return Domain(rfc1123: root)
     }
 }
 
-// MARK: - Errors
-
 extension Domain {
-    /// Errors that can occur during domain operations
+
     public enum Error: Swift.Error, Equatable {
-        /// Invalid domain format
+
         case invalidFormat(_ description: String)
 
-        /// Cannot create subdomain for this domain type
         case cannotCreateSubdomain
 
-        /// RFC conversion failed
         case conversionFailure(_ from: String, to: String)
 
-        /// IDNA conversion failed
         case idnaConversionFailure(_ reason: String)
     }
 }
-
-// MARK: - CustomStringConvertible
 
 extension Domain.Error: CustomStringConvertible {
     public var description: String {
@@ -235,8 +160,6 @@ extension Domain.Error: CustomStringConvertible {
         }
     }
 }
-
-// MARK: - Protocol Conformances
 
 extension Domain: CustomStringConvertible {
     public var description: String { name }

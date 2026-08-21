@@ -1,10 +1,3 @@
-//
-//  RFC 5321 Tests.swift
-//  swift-domain-standard
-//
-//  RFC 5321 uses RFC 1123 domain syntax
-//
-
 import Foundation
 import RFC_1123
 import RFC_5321
@@ -16,7 +9,7 @@ import Testing
 struct `RFC 5321 Domain Tests` {
     @Test
     func `Successfully creates domain from standard domain`() throws {
-        // RFC 5321 uses RFC 1123.Domain
+
         let domain = try RFC_1123.Domain("mail.example.com")
         #expect(domain.name == "mail.example.com")
     }
