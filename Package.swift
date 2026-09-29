@@ -11,12 +11,12 @@ let package = Package(
         .watchOS(.v27),
     ],
     products: [
-        .library(name: "Domain Standard", targets: ["Domain Standard"])
+        .library(name: "Domain Standard", targets: ["Domain Standard"]),
+        .library(name: "Domain Foundation Integration", targets: ["Domain Foundation Integration"]),
     ],
     dependencies: [
         .package(url: "https://github.com/swift-ietf/swift-rfc-1035.git", branch: "main"),
         .package(url: "https://github.com/swift-ietf/swift-rfc-1123.git", branch: "main"),
-        .package(url: "https://github.com/swift-ietf/swift-rfc-5321.git", branch: "main"),
         .package(url: "https://github.com/swift-ietf/swift-rfc-5890.git", branch: "main"),
     ],
     targets: [
@@ -25,14 +25,28 @@ let package = Package(
             dependencies: [
                 .product(name: "RFC 1035", package: "swift-rfc-1035"),
                 .product(name: "RFC 1123", package: "swift-rfc-1123"),
-                .product(name: "RFC 5321", package: "swift-rfc-5321"),
                 .product(name: "RFC 5890", package: "swift-rfc-5890"),
+            ]
+        ),
+        .target(
+            name: "Domain Foundation Integration",
+            dependencies: [
+                .target(name: "Domain Standard")
             ]
         ),
         .testTarget(
             name: "Domain Standard Tests",
             dependencies: [
-                .target(name: "Domain Standard")
+                .target(name: "Domain Standard"),
+                .product(name: "RFC 1035", package: "swift-rfc-1035"),
+                .product(name: "RFC 1123", package: "swift-rfc-1123"),
+            ]
+        ),
+        .testTarget(
+            name: "Domain Foundation Integration Tests",
+            dependencies: [
+                .target(name: "Domain Standard"),
+                .target(name: "Domain Foundation Integration"),
             ]
         ),
     ],

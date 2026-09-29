@@ -1,4 +1,4 @@
-public import RFC_5890
+import RFC_5890
 
 extension Domain {
 
@@ -37,18 +37,5 @@ extension Domain {
 
     public var isASCII: Bool {
         name.allSatisfy({ $0.isASCII })
-    }
-}
-
-extension Domain {
-
-    @available(*, deprecated, renamed: "init(ascii:)", message: "Use Domain(ascii:) instead")
-    public func toASCII() throws(IDNA.Error) -> String {
-        try IDNA.toASCII(name)
-    }
-
-    @available(*, deprecated, renamed: "init(unicode:)", message: "Use Domain(unicode:) instead")
-    public func toUnicode() throws(IDNA.Error) -> String {
-        try IDNA.toUnicode(name)
     }
 }

@@ -3,3 +3,4 @@ builder:
   configs:
   - documentation_targets:
     - Domain Standard
+    - Domain Foundation Integration

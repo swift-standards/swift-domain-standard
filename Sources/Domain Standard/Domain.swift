@@ -60,14 +60,6 @@ extension Domain {
     public var sld: String? {
         rfc1035?.sld?.rawValue ?? rfc1123.sld?.rawValue
     }
-
-    public var isRFC1035Compliant: Bool {
-        rfc1035 != nil
-    }
-
-    public var isStandardDomain: Bool {
-        true
-    }
 }
 
 extension Domain {
@@ -163,28 +155,4 @@ extension Domain.Error: CustomStringConvertible {
 
 extension Domain: CustomStringConvertible {
     public var description: String { name }
-}
-
-extension Domain: Codable {
-    public func encode(to encoder: any Encoder) throws {
-        var container = encoder.singleValueContainer()
-        try container.encode(name)
-    }
-
-    public init(from decoder: any Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        let string = try container.decode(String.self)
-        try self.init(string)
-    }
-}
-
-extension Domain: RawRepresentable {
-    public var rawValue: String { name }
-    public init?(rawValue: String) {
-        do throws(Error) {
-            try self.init(rawValue)
-        } catch {
-            return nil
-        }
-    }
 }

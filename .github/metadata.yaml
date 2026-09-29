@@ -1,6 +1,6 @@
 # .github/metadata.yaml
 # Triaged by AI-assisted bulk pass (2026-04-29).
-description: "RFC 1035, 1123, and 5321 domain name validation for Swift."
+description: "RFC 1035 and RFC 1123 domain name model with RFC 5890 IDNA checks for Swift."
 topics:
   - standards
   - domain
