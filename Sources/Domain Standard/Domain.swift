@@ -123,7 +123,7 @@ extension Domain {
 
 extension Domain {
 
-    public enum Error: Swift.Error, Equatable {
+    public enum Error: Swift::Error, Equatable {
 
         case invalidFormat(_ description: String)
 
