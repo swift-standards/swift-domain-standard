@@ -1,110 +1,14 @@
 # swift-domain-standard
 
-[![CI](https://github.com/swift-standards/swift-domain-standard/workflows/CI/badge.svg)](https://github.com/swift-standards/swift-domain-standard/actions/workflows/ci.yml)
+Use this package when you need a domain or host name that is valid under both DNS syntax (RFC 1035) and host name syntax (RFC 1123), and you don't want to pick one standard. Start from `Domain`. If you need exactly one standard's rules, use `RFC_1035.Domain` from swift-rfc-1035 or `RFC_1123.Domain` from swift-rfc-1123. For `Codable`, add the `Domain Foundation Integration` product.
 
-A single `Domain` type over the RFC 1035 and RFC 1123 domain name models, with RFC 5890 IDNA checks.
+## Laws
 
-## Overview
-
-`Domain` validates its text as an RFC 1123 host name and additionally records the RFC 1035 form when the name also satisfies the stricter DNS syntax. Both views are values of their own standards packages:
-
-- `rfc1123: RFC_1123.Domain` is always present
-- `rfc1035: RFC_1035.Domain?` is present when every label starts with a letter
-
-Apple Foundation bridging (`Codable`) lives in the `Domain Foundation Integration` product.
-
-## Installation
-
-```swift
-dependencies: [
-    .package(url: "https://github.com/swift-standards/swift-domain-standard.git", branch: "main")
-]
-```
-
-```swift
-.target(
-    name: "App",
-    dependencies: [
-        .product(name: "Domain Standard", package: "swift-domain-standard"),
-        .product(name: "Domain Foundation Integration", package: "swift-domain-standard"),
-    ]
-)
-```
-
-## Quick start
-
-```swift
-import Domain_Standard
-
-let domain = try Domain("example.com")
-domain.name  // "example.com"
-domain.tld   // Optional("com")
-domain.sld   // Optional("example")
-
-let subdomain = try domain.addingSubdomain("www")
-subdomain.name                    // "www.example.com"
-subdomain.isSubdomain(of: domain) // true
-
-let parent = try subdomain.parent()
-parent == domain                  // true
-```
-
-## RFC views
-
-```swift
-import RFC_1035
-import RFC_1123
-
-let domain = try Domain("example.com")
-domain.rfc1035 != nil          // true
-domain.rfc1123 == "example.com"
-
-let host = try Domain("123.example.com")
-host.rfc1035 == nil            // RFC 1035 labels start with a letter
-
-let rfc1035 = try RFC_1035.Domain(domain)
-let rfc1123 = RFC_1123.Domain(host)
-```
-
-## IDNA
-
-```swift
-let domain = try Domain("xn--bcher-kva.example")
-domain.hasALabels  // true
-domain.isASCII     // true
-
-let ascii = try Domain(ascii: domain)
-ascii == domain    // true
-```
-
-## Codable
-
-```swift
-import Domain_Foundation_Integration
-import Foundation
-
-let encoded = try JSONEncoder().encode(try Domain("example.com"))
-String(decoding: encoded, as: UTF8.self)  // "\"example.com\""
-let decoded = try JSONDecoder().decode(Domain.self, from: encoded)
-```
-
-## Errors
-
-```swift
-do throws(Domain.Error) {
-    _ = try Domain("invalid domain with spaces")
-} catch {
-    // .invalidFormat("invalid domain with spaces")
-}
-```
-
-`Domain.Error` cases: `invalidFormat`, `cannotCreateSubdomain`, `conversionFailure`, `idnaConversionFailure`.
-
-## Requirements
-
-- Swift 6.4
-- macOS 27 / iOS 27 / tvOS 27 / watchOS 27
-
-## License
-
-Apache 2.0. See [LICENSE](LICENSE.md).
+- Text is validated as an RFC 1123 host name. `Domain.rfc1123` is always set. `Domain.rfc1035` is set only when the name also meets RFC 1035, so a name with a label that starts with a digit, such as `123.example.com`, is accepted with `rfc1035` nil.
+- `Domain.rfc1035` is recomputed for every derived domain. The parent of `123.example.com` is `example.com` and has its RFC 1035 form again.
+- An RFC 1035 name that RFC 1123 refuses, such as the absolute form `example.com.`, can't become a `Domain`.
+- `Domain.isSubdomain(of:)` is strict: a domain is not a subdomain of itself. It compares the RFC 1035 forms when both domains have one, and the RFC 1123 forms otherwise.
+- `Domain.parent()` drops the leftmost label. `Domain.root()` keeps the last two labels, so the root of `example.com` is itself. A single-label name such as `localhost` has neither, and both return nil rather than throwing.
+- `Domain.addingSubdomain(_:)` reports every refusal, whether from a bad label or a name that grows too long, as the same `Domain.Error.cannotCreateSubdomain`.
+- A `Domain` only ever holds an ASCII host name. `Domain.init(ascii:)` returns an ASCII domain unchanged, and `Domain.init(unicode:)` throws, because the Unicode form of an A-label is not a valid host name.
+- With `Domain Foundation Integration`, a domain encodes as its `name` string and decodes from one. Text that isn't a valid domain fails to decode with a data-corrupted `DecodingError`.
