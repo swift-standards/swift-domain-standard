@@ -1,5 +1,5 @@
-public import RFC_1035
-public import RFC_1123
+import RFC_1035
+import RFC_1123
 
 
 extension Domain {
