@@ -122,17 +122,6 @@ extension Domain {
 }
 
 extension Domain {
-
-    public enum Error: Swift::Error, Equatable {
-
-        case invalidFormat(_ description: String)
-
-        case cannotCreateSubdomain
-
-        case conversionFailure(_ from: String, to: String)
-
-        case idnaConversionFailure(_ reason: String)
-    }
 }
 
 extension Domain.Error: CustomStringConvertible {
