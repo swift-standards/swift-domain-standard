@@ -1,7 +1,6 @@
 import RFC_1035
 import RFC_1123
 
-
 extension Domain {
     public enum Error: Swift::Error, Equatable {
 
