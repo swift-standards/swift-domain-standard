@@ -3,25 +3,27 @@ import RFC_5890
 extension Domain {
 
     public init(ascii domain: Domain) throws(Error) {
-        do {
-            let asciiString = try IDNA.toASCII(domain.name)
-            try self.init(asciiString)
+        let asciiString: String
+        do throws(IDNA.Error) {
+            asciiString = try IDNA.toASCII(domain.name)
         } catch {
             throw Error.idnaConversionFailure(
-                "Failed to convert '\(domain.name)' to ASCII: \(error)"
+                "Failed to convert '\(domain.name)' to ASCII: \(error.description)"
             )
         }
+        try self.init(asciiString)
     }
 
     public init(unicode domain: Domain) throws(Error) {
-        do {
-            let unicodeString = try IDNA.toUnicode(domain.name)
-            try self.init(unicodeString)
+        let unicodeString: String
+        do throws(IDNA.Error) {
+            unicodeString = try IDNA.toUnicode(domain.name)
         } catch {
             throw Error.idnaConversionFailure(
-                "Failed to convert '\(domain.name)' to Unicode: \(error)"
+                "Failed to convert '\(domain.name)' to Unicode: \(error.description)"
             )
         }
+        try self.init(unicodeString)
     }
 }
 
