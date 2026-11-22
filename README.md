@@ -1,6 +1,6 @@
 # swift-domain-standard
 
-Use this package when you need a domain or host name that is valid under both DNS syntax (RFC 1035) and host name syntax (RFC 1123), and you don't want to pick one standard. Start from `Domain`. If you need exactly one standard's rules, use `RFC_1035.Domain` from swift-rfc-1035 or `RFC_1123.Domain` from swift-rfc-1123. For `Codable`, add the `Domain Foundation Integration` product.
+Use this package when you need a domain or host name that is valid under both DNS syntax (RFC 1035) and host name syntax (RFC 1123), and you don't want to pick one standard. Start from `Domain`. If you need exactly one standard's rules, use `IETF.RFC.`1035`.Domain` from swift-rfc-1035 or `IETF.RFC.`1123`.Domain` from swift-rfc-1123. For `Codable`, add the `Domain Foundation Integration` product.
 
 ## Laws
 

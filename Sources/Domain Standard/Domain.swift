@@ -3,24 +3,24 @@ public import RFC_1123
 
 public struct Domain: Hashable, Sendable {
 
-    public let rfc1035: RFC_1035.Domain?
+    public let rfc1035: IETF.RFC.`1035`.Domain?
 
-    public let rfc1123: RFC_1123.Domain
+    public let rfc1123: IETF.RFC.`1123`.Domain
 
-    public init(rfc1035: RFC_1035.Domain) throws(Error) {
+    public init(rfc1035: IETF.RFC.`1035`.Domain) throws(Error) {
         self.rfc1035 = rfc1035
 
-        do throws(RFC_1123.Domain.Error) {
-            self.rfc1123 = try RFC_1123.Domain(rfc1035.name)
+        do throws(IETF.RFC.`1123`.Domain.Error) {
+            self.rfc1123 = try IETF.RFC.`1123`.Domain(rfc1035.name)
         } catch {
             throw Error.conversionFailure("RFC 1035", to: "RFC 1123")
         }
     }
 
-    public init(rfc1123: RFC_1123.Domain) {
+    public init(rfc1123: IETF.RFC.`1123`.Domain) {
 
-        do throws(RFC_1035.Domain.Error) {
-            self.rfc1035 = try RFC_1035.Domain(rfc1123.name)
+        do throws(IETF.RFC.`1035`.Domain.Error) {
+            self.rfc1035 = try IETF.RFC.`1035`.Domain(rfc1123.name)
         } catch {
             self.rfc1035 = nil
         }
@@ -32,9 +32,9 @@ extension Domain {
 
     public init<S: StringProtocol>(_ string: S) throws(Error) {
 
-        let rfc1123: RFC_1123.Domain
-        do throws(RFC_1123.Domain.Error) {
-            rfc1123 = try RFC_1123.Domain(String(string))
+        let rfc1123: IETF.RFC.`1123`.Domain
+        do throws(IETF.RFC.`1123`.Domain.Error) {
+            rfc1123 = try IETF.RFC.`1123`.Domain(String(string))
         } catch {
             throw Error.invalidFormat(String(string))
         }
@@ -83,7 +83,7 @@ extension Domain {
             }
         }
 
-        do throws(RFC_1123.Domain.Error) {
+        do throws(IETF.RFC.`1123`.Domain.Error) {
             let subdomain = try rfc1123.addingSubdomain(stringComponents)
             return Domain(rfc1123: subdomain)
         } catch {

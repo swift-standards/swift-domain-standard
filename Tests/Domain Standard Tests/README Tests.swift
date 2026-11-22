@@ -32,10 +32,10 @@ struct `README Tests` {
         let host = try Domain("123.example.com")
         #expect(host.rfc1035 == nil)
 
-        let rfc1035 = try RFC_1035.Domain(domain)
+        let rfc1035 = try IETF.RFC.`1035`.Domain(domain)
         #expect(rfc1035 == "example.com")
 
-        let rfc1123 = RFC_1123.Domain(host)
+        let rfc1123 = IETF.RFC.`1123`.Domain(host)
         #expect(rfc1123 == "123.example.com")
     }
 

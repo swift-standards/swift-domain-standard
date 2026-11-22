@@ -9,7 +9,7 @@ struct `Domain+RFC Tests` {
 
     @Test
     func `a domain is built from an RFC 1035 domain`() throws {
-        let rfc1035 = try RFC_1035.Domain("example.com")
+        let rfc1035 = try IETF.RFC.`1035`.Domain("example.com")
 
         let domain = try Domain(rfc1035: rfc1035)
 
@@ -20,7 +20,7 @@ struct `Domain+RFC Tests` {
 
     @Test
     func `a domain is built from an RFC 1123 domain`() throws {
-        let rfc1123 = try RFC_1123.Domain("example.com")
+        let rfc1123 = try IETF.RFC.`1123`.Domain("example.com")
 
         let domain = Domain(rfc1123: rfc1123)
 
@@ -41,7 +41,7 @@ struct `Domain+RFC Tests` {
     func `an RFC 1035 domain is recovered from a domain`() throws {
         let domain = try Domain("example.com")
 
-        let rfc1035 = try RFC_1035.Domain(domain)
+        let rfc1035 = try IETF.RFC.`1035`.Domain(domain)
 
         #expect(rfc1035 == "example.com")
     }
@@ -50,8 +50,8 @@ struct `Domain+RFC Tests` {
     func `an RFC 1035 domain refuses a host name with a leading digit`() throws {
         let domain = try Domain("123.example.com")
 
-        #expect(throws: RFC_1035.Domain.Error.self) {
-            try RFC_1035.Domain(domain)
+        #expect(throws: IETF.RFC.`1035`.Domain.Error.self) {
+            try IETF.RFC.`1035`.Domain(domain)
         }
     }
 
@@ -59,7 +59,7 @@ struct `Domain+RFC Tests` {
     func `an RFC 1123 domain is recovered from any domain`() throws {
         let domain = try Domain("123.example.com")
 
-        let rfc1123 = RFC_1123.Domain(domain)
+        let rfc1123 = IETF.RFC.`1123`.Domain(domain)
 
         #expect(rfc1123 == "123.example.com")
     }
@@ -135,7 +135,7 @@ struct `Domain+RFC Tests` {
 
     @Test
     func `an RFC 1035 domain that RFC 1123 refuses fails to convert`() throws {
-        let rfc1035 = try RFC_1035.Domain("example.com.")
+        let rfc1035 = try IETF.RFC.`1035`.Domain("example.com.")
 
         #expect(throws: Domain.Error.conversionFailure("RFC 1035", to: "RFC 1123")) {
             try Domain(rfc1035: rfc1035)
